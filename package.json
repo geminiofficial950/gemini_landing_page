@@ -1,19 +1,13 @@
 {
-  "name": "gemini-landing-server",
+  "name": "gemini-landing-page",
   "version": "1.0.0",
   "private": true,
-  "description": "Lead capture API, confirmation emails and admin panel for the Gemini Education CHC33021 landing page",
-  "main": "server.js",
+  "description": "Gemini Education CHC33021 landing page with lead API, confirmation emails and admin panel",
   "scripts": {
-    "start": "node server.js"
+    "postinstall": "npm --prefix server install --omit=dev --no-audit --no-fund",
+    "start": "node server/server.js"
   },
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "mongodb": "^6.21.0",
-    "nodemailer": "^6.9.16"
   }
 }

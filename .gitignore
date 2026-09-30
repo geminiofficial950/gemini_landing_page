@@ -1,0 +1,19 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# dependencies
+node_modules/
+
+# runtime data (leads when MongoDB is not used)
+server/data/
+
+# local backups of earlier page versions
+index.original.html
+index.v1-redesign.html
+
+# logs / OS
+*.log
+npm-debug.log*
+.DS_Store
