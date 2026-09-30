@@ -17,3 +17,7 @@ index.v1-redesign.html
 *.log
 npm-debug.log*
 .DS_Store
+
+# generated deployment files
+public/
+.vercel/

@@ -5,9 +5,13 @@
   "description": "Gemini Education CHC33021 landing page with lead API, confirmation emails and admin panel",
   "scripts": {
     "postinstall": "npm --prefix server install --omit=dev --no-audit --no-fund",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "build": "node scripts/build-public.js"
   },
   "engines": {
-    "node": ">=18"
+    "node": "22.x"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
   }
 }

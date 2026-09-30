@@ -10,7 +10,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
-require('dotenv').config({ path: path.join(ROOT, '.env') });
+if (!process.env.VERCEL) require('dotenv').config({ path: path.join(ROOT, '.env') });
 
 const express = require('express');
 const nodemailer = require('nodemailer');
@@ -26,8 +26,10 @@ const ADMIN_NOTIFY_EMAIL = process.env.ADMIN_NOTIFY_EMAIL || process.env.SMTP_US
 const DRY_RUN = process.env.MAIL_DRY_RUN === '1';
 
 if (!ADMIN_PASSWORD) {
-  console.error('✖ ADMIN_PASSWORD is not set in .env – refusing to start.');
-  process.exit(1);
+  throw new Error('ADMIN_PASSWORD must be set in the hosting environment.');
+}
+if (process.env.VERCEL && (!process.env.MONGO_URI || !process.env.SESSION_SECRET)) {
+  throw new Error('MONGO_URI and SESSION_SECRET are required on Vercel.');
 }
 for (const key of ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASSWORD']) {
   if (!process.env[key] && !DRY_RUN) console.warn(`⚠ ${key} is not set in .env – emails will fail.`);
@@ -110,6 +112,16 @@ if (process.env.MONGO_URI && !process.env.MONGO_DB) {
   if (!dbInPath) process.env.MONGO_DB = 'gemini_landing';
 }
 const store = process.env.MONGO_URI ? mongoStore(process.env.MONGO_URI) : jsonStore();
+let storageReady;
+function initStorage() {
+  if (!storageReady) {
+    storageReady = store.init().catch(err => {
+      storageReady = undefined;
+      throw err;
+    });
+  }
+  return storageReady;
+}
 
 // ---------------------------------------------------------------- form options (must match index.html)
 const OPTIONS = {
@@ -173,6 +185,9 @@ const transporter = nodemailer.createTransport(
         port: Number(process.env.SMTP_PORT) || 465,
         secure: (Number(process.env.SMTP_PORT) || 465) === 465 || process.env.SMTP_SECURE === 'true',
         auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 15000,
       }
 );
 const FROM = `"${MAIL_FROM_NAME}" <${process.env.SMTP_USER || 'no-reply@localhost'}>`;
@@ -350,7 +365,7 @@ const PUBLIC_EXT = new Set(['.html', '.jpg', '.jpeg', '.png', '.webp', '.svg', '
 // Never expose server code, data, env or config files through the static server
 app.use((req, res, next) => {
   const p = decodeURIComponent(req.path).toLowerCase();
-  if (p.startsWith('/server') || p.startsWith('/node_modules') || p.split('/').some(seg => seg.startsWith('.'))) {
+  if (p === '/app.js' || p.startsWith('/scripts') || p.startsWith('/server') || p.startsWith('/node_modules') || p.split('/').some(seg => seg.startsWith('.'))) {
     return res.status(404).send('Not found');
   }
   // Only website assets are public – no package.json, render.yaml, READMEs, source files…
@@ -362,6 +377,16 @@ app.use((req, res, next) => {
 });
 
 // ---- public lead API (CORS open so the page also works from Live Server)
+app.use(['/api', '/admin/api', '/admin/export.csv'], async (req, res, next) => {
+  try {
+    await initStorage();
+    next();
+  } catch (err) {
+    console.error('✖ Storage initialization failed:', err.message);
+    res.status(503).json({ ok: false, error: 'Storage unavailable. Please try again later.' });
+  }
+});
+
 app.use('/api', (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -390,8 +415,9 @@ app.post('/api/leads', rateLimit({ windowMs: 10 * 60 * 1000, max: 6 }), express.
     console.error('✖ Could not save lead:', err.message);
     return res.status(500).json({ ok: false, error: 'Could not save your enquiry. Please try again.' });
   }
+  // Finish email work before the serverless request can be suspended.
+  await sendEmails(record);
   res.status(201).json({ ok: true, id: record.id });
-  sendEmails(record); // after responding – the user never waits on SMTP
 });
 
 // ---- admin
@@ -484,9 +510,11 @@ app.use(express.static(ROOT, { dotfiles: 'deny', index: 'index.html', extensions
 
 app.use((req, res) => res.status(404).send('Not found'));
 
-(async () => {
+module.exports = app;
+
+if (require.main === module) (async () => {
   try {
-    await store.init();
+    await initStorage();
   } catch (err) {
     console.error(`✖ Could not connect to ${store.label}:`, err.message);
     process.exit(1);

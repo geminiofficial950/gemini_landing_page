@@ -63,3 +63,15 @@ npm start       # node server/server.js
 Set the variables from `.env.example` in the host's dashboard and add `TRUST_PROXY=1` when it runs behind a proxy.
 Static-only hosts (GitHub Pages, Netlify, Vercel static) can show the page but the form, emails and admin panel need this Node server.
 If MongoDB Atlas is used, allow the host's IP in Atlas → Network Access (or `0.0.0.0/0`).
+
+## Deploy on Vercel
+
+- Import the repository with Root Directory `./` and Express preset.
+- Install command: `npm install`; build command: `npm run build`; leave Output Directory at its preset default. Node is pinned to 22.x.
+- The root `app.js` exports Express. The build copies only website assets into `public/`; admin templates stay private.
+- Set `MONGO_URI`, `ADMIN_PASSWORD`, `SESSION_SECRET`, the SMTP variables, `ADMIN_NOTIFY_EMAIL`, `MAIL_FROM_NAME`, and `TRUST_PROXY=1` in Vercel Environment Variables. Do not upload `.env`.
+- MongoDB is required on Vercel; JSON file storage is only for local/persistent-server use. Allow the deployment to reach your MongoDB host.
+- Redeploy after changing environment variables. Verify `/`, images, `/admin`, an enquiry, both emails and the lead in the admin panel.
+- Emails finish before the enquiry response, so a slow SMTP connection can delay submission.
+- The in-memory rate limiter is per function instance, not a deployment-wide limit.
+- Vercel Hobby is for personal, non-commercial projects; business deployments require an appropriate plan.
