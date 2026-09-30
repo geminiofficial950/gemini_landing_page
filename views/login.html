@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin sign in | Gemini Education</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#11142a;--muted:#69708a;--line:rgba(17,20,42,.1);--grad:linear-gradient(115deg,#6b4eff 0%,#3183ff 46%,#14c7d9 100%)}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:"DM Sans",system-ui,sans-serif;color:var(--ink);
+      background:radial-gradient(circle at 15% 10%,rgba(141,91,255,.22),transparent 40%),radial-gradient(circle at 85% 90%,rgba(20,199,217,.2),transparent 40%),linear-gradient(125deg,#f3f1ff,#edf8ff 50%,#effcff)}
+    .card{width:min(420px,100%);background:#fff;border:1px solid var(--line);border-radius:28px;padding:40px 34px;box-shadow:0 30px 80px rgba(17,20,42,.12)}
+    .logo{height:52px;display:block;margin:0 auto 26px}
+    h1{font-family:Manrope,sans-serif;font-size:24px;letter-spacing:-.03em;margin:0 0 6px;text-align:center}
+    p{margin:0 0 26px;color:var(--muted);text-align:center;font-size:14px}
+    label{display:block;font-size:12px;font-weight:700;color:#5c6276;margin-bottom:8px}
+    input{width:100%;border:1.5px solid #e0e4ed;border-radius:14px;padding:15px 16px;font:inherit;outline:none;transition:border-color .2s,box-shadow .2s}
+    input:focus{border-color:#7d74ef;box-shadow:0 0 0 5px rgba(108,100,235,.12)}
+    button{margin-top:18px;width:100%;border:0;border-radius:999px;padding:16px;font:inherit;font-weight:800;color:#fff;background:var(--grad);cursor:pointer;box-shadow:0 14px 30px rgba(73,103,255,.3)}
+    button:hover{filter:brightness(1.05)}
+    .error{background:#fff1f2;color:#be123c;border:1px solid #fecdd3;border-radius:12px;padding:11px 14px;font-size:13px;margin-bottom:16px;display:none}
+    .error.show{display:block}
+  </style>
+</head>
+<body>
+  <form class="card" method="post" action="/admin/login">
+    <img class="logo" src="/logo-web.png" alt="Gemini Education">
+    <h1>Admin panel</h1>
+    <p>Sign in to view course enquiries.</p>
+    <div class="error" id="err">Incorrect password. Please try again.</div>
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
+    <button type="submit">Sign in</button>
+  </form>
+  <script>if(new URLSearchParams(location.search).has('error')) document.getElementById('err').classList.add('show');</script>
+</body>
+</html>

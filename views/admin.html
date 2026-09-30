@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Leads | Gemini Education Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#11142a;--ink-2:#313754;--muted:#69708a;--line:rgba(17,20,42,.09);--bg:#f6f7fc;
+      --violet:#6b4eff;--grad:linear-gradient(115deg,#6b4eff 0%,#3183ff 46%,#14c7d9 100%);
+      --new:#6b4eff;--contacted:#3183ff;--enrolled:#168c65;--closed:#8b91a3;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"DM Sans",system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+    button,input,select,textarea{font:inherit;color:inherit}
+    button{cursor:pointer}
+    .wrap{width:min(calc(100% - 32px),1320px);margin:0 auto}
+
+    header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+    .bar{height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand img{height:40px}
+    .brand span{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#7c839b;font-weight:700;padding-left:14px;border-left:1px solid var(--line)}
+    .actions{display:flex;gap:10px;align-items:center}
+    .btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 16px;font-weight:700;font-size:13px;text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;gap:8px}
+    .btn:hover{border-color:rgba(107,78,255,.35);color:var(--violet)}
+    .btn.primary{background:var(--grad);color:#fff;border:0}
+    .btn.primary:hover{color:#fff;filter:brightness(1.05)}
+    .btn.danger{color:#be123c;border-color:#fecdd3}
+    .btn.danger:hover{background:#fff1f2}
+
+    main{padding:28px 0 60px}
+    h1{font-family:Manrope,sans-serif;font-size:28px;letter-spacing:-.03em;margin:0 0 4px}
+    .sub{color:var(--muted);font-size:14px;margin:0 0 24px}
+
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+    .stat{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px 22px}
+    .stat b{display:block;font-family:Manrope,sans-serif;font-size:30px;letter-spacing:-.04em}
+    .stat span{color:var(--muted);font-size:13px;font-weight:600}
+    .stat.accent{background:var(--grad);color:#fff;border:0}
+    .stat.accent span{color:rgba(255,255,255,.85)}
+
+    .filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+    .filters input,.filters select{border:1.5px solid #e0e4ed;background:#fff;border-radius:12px;padding:11px 14px;outline:none}
+    .filters input{flex:1 1 260px}
+    .filters input:focus,.filters select:focus{border-color:#7d74ef;box-shadow:0 0 0 4px rgba(108,100,235,.12)}
+
+    .panel{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden}
+    .table-scroll{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;min-width:980px}
+    th{position:sticky;top:0;background:#fafbff;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#7c839b;font-weight:800;padding:14px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+    td{padding:14px 16px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:middle}
+    tr:last-child td{border-bottom:0}
+    tbody tr{cursor:pointer;transition:background .15s}
+    tbody tr:hover{background:#f8f7ff}
+    .name{font-weight:700}
+    .muted{color:var(--muted);font-size:12px}
+    .chip{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;background:#f0edff;color:#5c53d9;white-space:nowrap}
+    .status{border:1.5px solid var(--line);border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;background:#fff;text-transform:capitalize}
+    .status[data-v="new"]{color:var(--new);border-color:rgba(107,78,255,.35)}
+    .status[data-v="contacted"]{color:var(--contacted);border-color:rgba(49,131,255,.35)}
+    .status[data-v="enrolled"]{color:var(--enrolled);border-color:rgba(22,140,101,.35)}
+    .status[data-v="closed"]{color:var(--closed)}
+    .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+    .dot.sent{background:#16a34a}.dot.failed{background:#e11d48}.dot.pending{background:#f59e0b}.dot.skipped{background:#cbd5e1}
+    .empty{padding:60px 20px;text-align:center;color:var(--muted)}
+    a.link{color:var(--violet);text-decoration:none;font-weight:600}
+    a.link:hover{text-decoration:underline}
+
+    /* drawer */
+    .scrim{position:fixed;inset:0;background:rgba(17,20,42,.3);opacity:0;pointer-events:none;transition:opacity .3s;z-index:40}
+    .scrim.show{opacity:1;pointer-events:auto}
+    .drawer{position:fixed;top:0;right:0;bottom:0;width:min(480px,100%);background:#fff;z-index:50;transform:translateX(100%);transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s;display:flex;flex-direction:column;visibility:hidden}
+    .drawer.show{transform:none;visibility:visible;box-shadow:-30px 0 80px rgba(17,20,42,.15)}
+    .drawer-head{padding:22px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+    .drawer-head h2{font-family:Manrope,sans-serif;margin:0;font-size:22px;letter-spacing:-.03em}
+    .drawer-body{padding:20px 24px;overflow:auto;flex:1}
+    .close{border:0;background:#f1f3f8;width:38px;height:38px;border-radius:50%;font-size:18px}
+    dl{display:grid;grid-template-columns:140px 1fr;gap:10px 14px;margin:0 0 20px}
+    dt{color:var(--muted);font-size:13px}
+    dd{margin:0;font-size:14px;font-weight:600;word-break:break-word}
+    .section-title{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#7c839b;font-weight:800;margin:22px 0 10px}
+    textarea{width:100%;min-height:110px;border:1.5px solid #e0e4ed;border-radius:14px;padding:12px 14px;outline:none;resize:vertical}
+    textarea:focus{border-color:#7d74ef;box-shadow:0 0 0 4px rgba(108,100,235,.12)}
+    .drawer-foot{padding:16px 24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .confirm{display:none;align-items:center;gap:8px;font-size:13px;color:#be123c;font-weight:700}
+    .confirm.show{display:flex}
+
+    .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:600;transition:transform .35s cubic-bezier(.22,1,.36,1);z-index:60}
+    .toast.show{transform:translate(-50%,0)}
+
+    @media(max-width:860px){
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .brand span{display:none}
+      .actions .btn span.lbl{display:none}
+    }
+    @media(max-width:480px){
+      dl{grid-template-columns:1fr;gap:2px 0}
+      dd{margin-bottom:10px}
+      h1{font-size:24px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <div class="brand"><img src="/logo-web.png" alt="Gemini Education"><span>Admin</span></div>
+      <div class="actions">
+        <a class="btn" href="/admin/export.csv">⬇ <span class="lbl">Export CSV</span></a>
+        <button class="btn" id="refresh" type="button">↻ <span class="lbl">Refresh</span></button>
+        <form method="post" action="/admin/logout" style="margin:0"><button class="btn" type="submit">Sign out</button></form>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Course enquiries</h1>
+    <p class="sub">Leads from the CHC33021 “Check eligibility &amp; fees” form. <span id="updated"></span></p>
+
+    <div class="stats">
+      <div class="stat accent"><b id="sTotal">–</b><span>Total leads</span></div>
+      <div class="stat"><b id="sNew">–</b><span>New (not contacted)</span></div>
+      <div class="stat"><b id="sToday">–</b><span>Today</span></div>
+      <div class="stat"><b id="sWeek">–</b><span>Last 7 days</span></div>
+    </div>
+
+    <div class="filters">
+      <input id="q" type="search" placeholder="Search name, phone, email, postcode…" aria-label="Search leads">
+      <select id="fStatus" aria-label="Filter by status"><option value="">All statuses</option></select>
+      <select id="fInterest" aria-label="Filter by interest"><option value="">All interests</option></select>
+      <select id="fState" aria-label="Filter by state"><option value="">All states</option></select>
+    </div>
+
+    <div class="panel">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Received</th><th>Name</th><th>Contact</th><th>Location</th><th>Interest</th><th>Situation</th><th>Start</th><th>Emails</th><th>Status</th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="empty" hidden>No leads yet. Submissions from the landing page form will appear here.</div>
+    </div>
+  </main>
+
+  <div class="scrim" id="scrim"></div>
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div><div class="muted" id="dDate"></div><h2 id="dName"></h2></div>
+      <button class="close" id="dClose" type="button" aria-label="Close">×</button>
+    </div>
+    <div class="drawer-body" id="dBody"></div>
+    <div class="drawer-foot">
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn danger" id="dDelete" type="button">Delete</button>
+        <div class="confirm" id="dConfirm">Delete permanently?
+          <button class="btn danger" id="dYes" type="button">Yes, delete</button>
+          <button class="btn" id="dNo" type="button">Cancel</button>
+        </div>
+      </div>
+      <button class="btn primary" id="dSave" type="button">Save notes</button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    let LEADS = [], OPTIONS = {}, STATUSES = [], current = null;
+
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const label = (group, v) => (OPTIONS[group] && OPTIONS[group][v]) || v || '–';
+    const fmt = iso => new Date(iso).toLocaleString('en-AU', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+    const toast = msg => { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2200); };
+
+    async function api(url, opts = {}){
+      const res = await fetch(url, {...opts, headers:{'X-Requested-With':'fetch', 'Content-Type':'application/json', ...(opts.headers || {})}, credentials:'same-origin'});
+      if(res.status === 401){ location.reload(); throw new Error('signed out'); }
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.error || 'Request failed');
+      return data;
+    }
+
+    async function load(){
+      const data = await api('/admin/api/leads');
+      const first = !STATUSES.length;
+      LEADS = data.leads; OPTIONS = data.options; STATUSES = data.statuses;
+      if(first){
+        STATUSES.forEach(s => $('fStatus').insertAdjacentHTML('beforeend', `<option value="${s}">${s[0].toUpperCase() + s.slice(1)}</option>`));
+        Object.entries(OPTIONS.interest).forEach(([k, v]) => $('fInterest').insertAdjacentHTML('beforeend', `<option value="${esc(k)}">${esc(v)}</option>`));
+        Object.keys(OPTIONS.state).forEach(k => $('fState').insertAdjacentHTML('beforeend', `<option value="${esc(k)}">${esc(k)}</option>`));
+      }
+      $('updated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-AU', {hour:'2-digit', minute:'2-digit'}) + '.';
+      render();
+      if(current){ const fresh = LEADS.find(l => l.id === current.id); if(fresh) current = fresh; }
+    }
+
+    function render(){
+      const now = Date.now(), day = 864e5;
+      const today = new Date(); today.setHours(0,0,0,0);
+      $('sTotal').textContent = LEADS.length;
+      $('sNew').textContent = LEADS.filter(l => l.status === 'new').length;
+      $('sToday').textContent = LEADS.filter(l => new Date(l.createdAt) >= today).length;
+      $('sWeek').textContent = LEADS.filter(l => now - new Date(l.createdAt) < 7 * day).length;
+
+      const q = $('q').value.trim().toLowerCase();
+      const fs = $('fStatus').value, fi = $('fInterest').value, fst = $('fState').value;
+      const list = LEADS.filter(l =>
+        (!fs || l.status === fs) && (!fi || l.interest === fi) && (!fst || l.state === fst) &&
+        (!q || [l.firstName, l.phone, l.email, l.postcode, l.state, l.notes].join(' ').toLowerCase().includes(q)));
+
+      $('empty').hidden = list.length > 0;
+      $('empty').textContent = LEADS.length ? 'No leads match these filters.' : 'No leads yet. Submissions from the landing page form will appear here.';
+      $('rows').innerHTML = list.map(l => `
+        <tr data-id="${esc(l.id)}">
+          <td><div>${esc(fmt(l.createdAt))}</div></td>
+          <td><div class="name">${esc(l.firstName)}</div></td>
+          <td><div>${esc(l.phone)}</div><div class="muted">${esc(l.email)}</div></td>
+          <td>${esc(l.state)} <span class="muted">${esc(l.postcode)}</span></td>
+          <td><span class="chip">${esc(label('interest', l.interest))}</span></td>
+          <td>${esc(label('situation', l.situation))}</td>
+          <td>${esc(label('startTime', l.startTime))}</td>
+          <td class="muted"><span class="dot ${esc(l.emailStatus?.user)}"></span>User<br><span class="dot ${esc(l.emailStatus?.admin)}"></span>Team</td>
+          <td><select class="status" data-v="${esc(l.status)}" aria-label="Status">${STATUSES.map(s => `<option value="${s}" ${s === l.status ? 'selected' : ''}>${s}</option>`).join('')}</select></td>
+        </tr>`).join('');
+    }
+
+    async function setStatus(id, status){
+      const data = await api('/admin/api/leads/' + encodeURIComponent(id), {method:'PATCH', body:JSON.stringify({status})});
+      Object.assign(LEADS.find(l => l.id === id), data.lead);
+      render(); toast('Status updated');
+      if(current && current.id === id) openDrawer(id);
+    }
+
+    function openDrawer(id){
+      const l = LEADS.find(x => x.id === id); if(!l) return;
+      current = l;
+      $('dDate').textContent = 'Received ' + fmt(l.createdAt);
+      $('dName').textContent = l.firstName;
+      const utm = Object.entries(l.utm || {});
+      $('dBody').innerHTML = `
+        <div class="section-title">Contact</div>
+        <dl>
+          <dt>Phone</dt><dd><a class="link" href="tel:${esc(l.phone.replace(/\s/g,''))}">${esc(l.phone)}</a></dd>
+          <dt>Email</dt><dd><a class="link" href="mailto:${esc(l.email)}">${esc(l.email)}</a></dd>
+          <dt>WhatsApp</dt><dd><a class="link" target="_blank" rel="noopener" href="https://wa.me/${esc(l.phone.replace(/[^0-9]/g,'').replace(/^0/,'61'))}">Open chat</a></dd>
+          <dt>Status</dt><dd><select class="status" id="dStatus" data-v="${esc(l.status)}">${STATUSES.map(s => `<option value="${s}" ${s === l.status ? 'selected' : ''}>${s}</option>`).join('')}</select></dd>
+        </dl>
+        <div class="section-title">Answers</div>
+        <dl>
+          <dt>Right now</dt><dd>${esc(label('situation', l.situation))}</dd>
+          <dt>Interest</dt><dd>${esc(label('interest', l.interest))}</dd>
+          <dt>Location</dt><dd>${esc(l.state)} ${esc(l.postcode)}</dd>
+          <dt>Preferred start</dt><dd>${esc(label('startTime', l.startTime))}</dd>
+          <dt>Course</dt><dd>${esc(l.course)}</dd>
+        </dl>
+        <div class="section-title">Notes</div>
+        <textarea id="dNotes" placeholder="Call notes, follow-up date…">${esc(l.notes || '')}</textarea>
+        <div class="section-title">Tracking</div>
+        <dl>
+          ${utm.length ? utm.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('') : '<dt>UTM</dt><dd class="muted">None</dd>'}
+          <dt>Page</dt><dd class="muted">${esc(l.pageUrl || '–')}</dd>
+          <dt>Emails</dt><dd><span class="dot ${esc(l.emailStatus?.user)}"></span>User: ${esc(l.emailStatus?.user)} &nbsp; <span class="dot ${esc(l.emailStatus?.admin)}"></span>Team: ${esc(l.emailStatus?.admin)}${l.emailError ? `<div class="muted">${esc(l.emailError)}</div>` : ''}</dd>
+          <dt>Device</dt><dd class="muted">${esc(l.userAgent || '–')}</dd>
+          <dt>Lead ID</dt><dd class="muted">${esc(l.id)}</dd>
+        </dl>`;
+      $('dStatus').addEventListener('change', e => setStatus(l.id, e.target.value).catch(err => toast(err.message)));
+      $('dConfirm').classList.remove('show'); $('dDelete').hidden = false;
+      $('drawer').classList.add('show'); $('scrim').classList.add('show'); $('drawer').setAttribute('aria-hidden', 'false');
+    }
+    function closeDrawer(){ current = null; $('drawer').classList.remove('show'); $('scrim').classList.remove('show'); $('drawer').setAttribute('aria-hidden', 'true'); }
+
+    $('rows').addEventListener('click', e => {
+      if(e.target.closest('select')) return;
+      const tr = e.target.closest('tr[data-id]'); if(tr) openDrawer(tr.dataset.id);
+    });
+    $('rows').addEventListener('change', e => {
+      const sel = e.target.closest('select.status'); if(!sel) return;
+      setStatus(sel.closest('tr').dataset.id, sel.value).catch(err => toast(err.message));
+    });
+    ['q','fStatus','fInterest','fState'].forEach(id => $(id).addEventListener('input', render));
+    $('refresh').addEventListener('click', () => load().then(() => toast('Refreshed')).catch(err => toast(err.message)));
+    $('dClose').addEventListener('click', closeDrawer);
+    $('scrim').addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDrawer(); });
+    $('dSave').addEventListener('click', async () => {
+      if(!current) return;
+      try{
+        const data = await api('/admin/api/leads/' + encodeURIComponent(current.id), {method:'PATCH', body:JSON.stringify({notes:$('dNotes').value})});
+        Object.assign(LEADS.find(l => l.id === current.id), data.lead); render(); toast('Notes saved');
+      }catch(err){ toast(err.message); }
+    });
+    $('dDelete').addEventListener('click', () => { $('dConfirm').classList.add('show'); $('dDelete').hidden = true; });
+    $('dNo').addEventListener('click', () => { $('dConfirm').classList.remove('show'); $('dDelete').hidden = false; });
+    $('dYes').addEventListener('click', async () => {
+      if(!current) return;
+      try{
+        await api('/admin/api/leads/' + encodeURIComponent(current.id), {method:'DELETE'});
+        LEADS = LEADS.filter(l => l.id !== current.id); closeDrawer(); render(); toast('Lead deleted');
+      }catch(err){ toast(err.message); }
+    });
+
+    load().catch(err => toast(err.message));
+    setInterval(() => { if(!document.hidden && !current) load().catch(() => {}); }, 30000);
+  </script>
+</body>
+</html>
