@@ -4,7 +4,7 @@
   "buildCommand": "npm run build",
   "functions": {
     "app.js": {
-      "includeFiles": "server/views/**",
+      "includeFiles": "{server/views/**,index.html,logo-web.png,herosection-web.jpg,course-1.jpg,course-2.jpg,course-3.jpg}",
       "maxDuration": 120
     }
   }
