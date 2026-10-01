@@ -507,7 +507,7 @@ app.get('/admin/export.csv', async (req, res) => {
 
 // ---- landing page + assets
 // Explicit routes also work when the platform disables express.static().
-const websiteFiles = ['index.html', 'logo-web.png', 'herosection-web.jpg', 'course-1.jpg', 'course-2.jpg', 'course-3.jpg'];
+const websiteFiles = ['index.html', 'logo-web.png', 'images/herossection.jpeg', 'images/Start/01.jpg.jpeg', 'images/Start/02.jpg.jpeg', 'images/Start/03.jpg.jpeg'];
 app.get('/', (req, res) => res.sendFile(path.join(ROOT, 'index.html')));
 for (const file of websiteFiles) {
   app.get('/' + file, (req, res) => res.sendFile(path.join(ROOT, file)));
