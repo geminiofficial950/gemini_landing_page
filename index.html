@@ -13,7 +13,7 @@
   <style>
     /* Design tokens taken from geminieducation.com.au */
     :root{
-      --ink:#111111;--ink-2:#1f2937;--muted:#5b6475;--line:#e7e5e6;--bg:#f8f6f7;--card:#ffffff;
+      --ink:#111111;--ink-2:#1f2937;--muted:#5b6475;--line:#e7e5e6;--bg:#ffffff;--card:#ffffff;
       --purple:#341ee8;--navy:#0e0868;--blue:#0087be;--blue-dark:#006f9c;--whatsapp:#25d366;--yellow:#ffbe18;--yellow-soft:#fff9e6;
       --radius:16px;--btn-radius:12px;--max:1180px;
       --shadow:0 18px 44px rgba(15,23,42,.08);--shadow-sm:0 4px 14px rgba(15,23,42,.08);
@@ -130,7 +130,7 @@
     .band{padding:28px 0 4px}
     .band-grid{display:grid;grid-template-columns:1.4fr .6fr;gap:20px;align-items:stretch}
     .visual{position:relative;border-radius:24px;overflow:hidden;min-height:290px;background:#ece9ea}
-    .visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+    .visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0%}
     .visual-chip{position:absolute;background:#fff;border-radius:999px;padding:9px 16px;box-shadow:var(--shadow-sm);display:flex;align-items:baseline;gap:8px}
     .chip-one{left:18px;top:18px}.chip-two{right:18px;top:18px}
     .chip-label{font-size:13px;color:var(--muted)}
@@ -147,7 +147,7 @@
 
     /* ---------- Stats ---------- */
     .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .stat-card{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .stat-card{background:transparent;border-radius:var(--radius);padding:18px}
     .stat-value{font-size:clamp(30px,2.9vw,40px);font-weight:900;letter-spacing:-.03em;color:var(--ink);font-variant-numeric:tabular-nums}
     .stat-label{font-weight:700;margin-top:4px;color:var(--ink-2);font-size:16px}
     .stat-sub{font-size:14px;margin-top:4px;line-height:1.5;color:var(--muted)}
@@ -155,10 +155,10 @@
     /* ---------- Course ---------- */
     .split{display:grid;grid-template-columns:.8fr 1.2fr;gap:32px;align-items:center}
     .course-media{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:4/4.3;background:#ece9ea}
-    .course-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;opacity:0;animation:fade 15s infinite}
+    .course-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0%;opacity:0;animation:fade 15s infinite}
     .course-media img:nth-child(1){animation-delay:0s}
     .course-media img:nth-child(2){animation-delay:5s}
-    .course-media img:nth-child(3){animation-delay:10s}
+    .course-media img:nth-child(3){animation-delay:10s;object-position:78% 0%}
     @keyframes fade{0%{opacity:0}4%,30%{opacity:1}36%,100%{opacity:0}}
     .media-badge{position:absolute;left:16px;bottom:16px;z-index:2;padding:9px 16px;border-radius:999px;background:#fff;font-weight:600;font-size:14px;box-shadow:var(--shadow-sm)}
     .split-copy h2{margin:6px 0 12px}
@@ -176,7 +176,7 @@
 
     /* ---------- Card grids ---------- */
     .career-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .career-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+    .career-card{background:#fff;border-radius:var(--radius);overflow:hidden}
     .career-media{height:160px;background:#ece9ea}
     .career-media img{width:100%;height:100%;object-fit:cover}
     .career-card .top{padding:14px 16px 16px}
@@ -186,8 +186,8 @@
     .path-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
     .path-card{background:#fff;border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
     .path-card.featured{box-shadow:var(--shadow),0 0 0 2px var(--purple)}
-    .path-media{height:160px;background:#ece9ea}
-    .path-media img{width:100%;height:100%;object-fit:cover}
+    .path-media{aspect-ratio:3 / 2;background:#ece9ea}
+    .path-media img{display:block;width:100%;height:100%;object-fit:contain}
     .path-body{padding:14px 18px 18px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;flex:1}
     .path-tag{font-size:14px;font-weight:600;color:var(--muted)}
     .featured .path-tag{color:var(--purple)}
@@ -196,7 +196,7 @@
     .path-link{align-self:flex-start;font-weight:600;font-size:15px;color:#fff;background:var(--purple);border-radius:999px;padding:9px 16px}
     .path-link:hover{background:#2715c4}
 
-    .rpl-shell{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center;background:#fff;border-radius:24px;padding:26px;box-shadow:var(--shadow)}
+    .rpl-shell{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center;background:transparent;border-radius:24px;padding:26px}
     .rpl-shell h2{margin:6px 0 12px}
     .rpl-shell .btn{margin-top:20px}
     .evidence-label{font-size:15px;font-weight:600;color:var(--purple);margin-bottom:10px}
@@ -204,34 +204,34 @@
     .evidence{background:var(--bg);border-radius:12px;padding:13px 15px;font-size:15.5px;font-weight:600;color:var(--ink-2)}
     .rpl-note{font-size:13.5px;margin-top:12px}
 
-    .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-    .step{background:#fff;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
-    .step-no{font-size:34px;font-weight:900;letter-spacing:-.03em;line-height:1;color:var(--purple);margin-bottom:12px}
-    .step h3{font-size:17px;margin-bottom:6px}
-    .step p{font-size:14.5px;line-height:1.55}
+    .steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+    .step{background:#fafaf8;border:0;border-radius:8px;padding:22px 18px 24px;box-shadow:none}
+    .step h3{font-size:17px;line-height:1.35;letter-spacing:-.025em;margin-bottom:10px}
+    .step p{font-size:14.5px;line-height:1.65}
 
-    .difference-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .difference-card{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
-    .difference-card h3{margin-bottom:6px}
-    .difference-card p{font-size:15.5px}
+    .difference-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+    .difference-card{background:#fafaf8;border:0;border-radius:8px;padding:26px 22px 28px;box-shadow:none}
+    .difference-card h3{font-size:19px;line-height:1.35;letter-spacing:-.025em;margin-bottom:10px}
+    .difference-card p{font-size:15px;line-height:1.7}
+
 
     .testimonial-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
-    .quote-large{background:#fff;border-radius:var(--radius);padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;box-shadow:var(--shadow)}
+    .quote-large{background:transparent;border-radius:var(--radius);padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
     .quote-mark{font-family:Georgia,serif;font-size:56px;line-height:.6;color:var(--purple)}
     .quote-text{font-size:20px;line-height:1.55;font-weight:600;color:var(--ink);letter-spacing:-.01em;margin-top:12px}
     .person{display:flex;align-items:center;gap:12px}
     .person img{width:46px;height:46px;border-radius:50%;object-fit:cover}
     .person strong{font-size:15px;display:block}.person span{font-size:13.5px;color:var(--muted)}
     .quote-stack{display:grid;gap:14px}
-    .quote-mini{background:#fff;border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;box-shadow:var(--shadow)}
+    .quote-mini{background:transparent;border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;justify-content:space-between;gap:12px}
     .quote-mini p{font-size:16px;color:var(--ink-2)}
-    .rating-strip{margin-top:14px;border-radius:var(--radius);padding:14px 20px;background:#fff;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+    .rating-strip{margin-top:14px;border-radius:var(--radius);padding:14px 20px;background:transparent;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
     .rating-strip strong{font-size:20px;color:var(--yellow);letter-spacing:2px}
     .rating-note{font-size:14px;color:var(--muted);margin-top:2px}
 
     .faq-layout{display:grid;grid-template-columns:.7fr 1.3fr;gap:28px;align-items:start}
     .faq-wrap{display:grid;gap:8px}
-    .faq-item{background:#fff;border-radius:14px;box-shadow:var(--shadow-sm)}
+    .faq-item{background:transparent;border-radius:14px}
     .faq-q{width:100%;border:0;background:none;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;text-align:left;font-size:17px;font-weight:700;color:var(--ink)}
     .faq-plus{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-size:20px;font-weight:400;color:var(--ink-2);transition:transform .2s}
     .faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s ease}
@@ -289,11 +289,12 @@
     @media(hover:hover){
       .btn:hover,.path-link:hover{transform:translateY(-1px)}
       .btn:hover .arrow{transform:translateX(3px)}
-      .career-card,.path-card,.step,.difference-card,.stat-card,.quote-mini,.quote-large{transition:transform .25s ease,box-shadow .25s ease}
-      .career-card:hover,.path-card:hover,.step:hover,.difference-card:hover,.stat-card:hover,.quote-mini:hover{transform:translateY(-4px);box-shadow:0 24px 50px rgba(15,23,42,.12)}
+      .career-card,.path-card,.stat-card,.quote-mini,.quote-large{transition:transform .25s ease,box-shadow .25s ease}
+      .career-card:hover{transform:translateY(-4px)}
+      .path-card:hover{transform:translateY(-4px);box-shadow:0 24px 50px rgba(15,23,42,.12)}
       .path-card.featured:hover{box-shadow:0 24px 50px rgba(15,23,42,.12),0 0 0 2px var(--purple)}
-      .career-media img,.path-media img{transition:transform .5s ease}
-      .career-card:hover .career-media img,.path-card:hover .path-media img{transform:scale(1.04)}
+      .career-media img{transition:transform .5s ease}
+      .career-card:hover .career-media img{transform:scale(1.04)}
     }
     .rail-bar{display:none}
 
@@ -374,7 +375,6 @@
     <div class="nav container">
       <a class="brand" href="#top" aria-label="Gemini Education home">
         <img class="brand-logo" src="logo-web.png" alt="Gemini Education" width="592" height="231">
-        <span class="brand-sub">Education · Careers · Migration</span>
       </a>
       <nav class="nav-actions" aria-label="Primary">
         <a class="nav-link" href="#course">Course</a>
@@ -526,7 +526,7 @@
     <section class="band">
       <div class="container band-grid">
         <div class="visual rv">
-          <img src="herosection-web.jpg" alt="Support worker speaking with an older person" width="1448" height="1086" loading="lazy" decoding="async">
+          <img src="images/herossection.jpeg" alt="Support worker speaking with an older person" width="612" height="329" loading="lazy" decoding="async">
           <div class="visual-chip chip-one"><div class="chip-label">Workplace requirement</div><div class="chip-value">120 hours</div></div>
           <div class="visual-chip chip-two"><div class="chip-label">Qualification</div><div class="chip-value">15 units</div></div>
           <div class="hero-form-card">
@@ -582,9 +582,9 @@
     <section class="section tint" id="course">
       <div class="container split">
         <div class="course-media rv">
-          <img src="course-1.jpg" alt="Student studying with a laptop" width="1122" height="1402" loading="lazy" decoding="async">
-          <img src="course-2.jpg" alt="Care professional" width="1122" height="1402" loading="lazy" decoding="async">
-          <img src="course-3.jpg" alt="" width="1122" height="1402" loading="lazy" decoding="async">
+          <img src="images/Start/01.jpg.jpeg" alt="Care professional helping an older woman walk at home" width="612" height="408" loading="lazy" decoding="async">
+          <img src="images/Start/02.jpg.jpeg" alt="Care professional spending time outdoors with older adults" width="612" height="408" loading="lazy" decoding="async">
+          <img src="images/Start/03.jpg.jpeg" alt="Care professional speaking with an older man" width="612" height="323" loading="lazy" decoding="async">
           <div class="media-badge">CHC33021 · Certificate III</div>
         </div>
         <div class="split-copy rv">
@@ -616,12 +616,12 @@
           <p>Depending on your role, employer, experience and electives completed, this qualification can support pathways across individual support settings.</p>
         </div>
         <div class="career-grid m-rail rv">
-          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=560&h=300&q=70" alt="" width="560" height="300"></div><div class="top"><h3>Aged Care Worker</h3><p>Support older Australians with everyday activities, independence and wellbeing.</p></div></article>
-          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?auto=format&fit=crop&w=560&h=300&q=70" alt="" width="560" height="300"></div><div class="top"><h3>Disability Support Worker</h3><p>Provide person-centred support to people living with disability.</p></div></article>
-          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1559234938-b60fff04894d?auto=format&fit=crop&w=560&h=300&q=70" alt="" width="560" height="300"></div><div class="top"><h3>Home Care Worker</h3><p>Support clients to remain independent within their own homes.</p></div></article>
-          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1542884748-2b87b36c6b90?auto=format&fit=crop&w=560&h=300&q=70" alt="" width="560" height="300"></div><div class="top"><h3>Personal Care Assistant</h3><p>Provide practical and personal support based on individual needs.</p></div></article>
-          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=560&h=300&q=70" alt="" width="560" height="300"></div><div class="top"><h3>Community Support Worker</h3><p>Help individuals participate in their community and work toward personal goals.</p></div></article>
-          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=560&h=300&q=70" alt="" width="560" height="300"></div><div class="top"><h3>Residential Support Worker</h3><p>Support people within residential care and supported-living environments.</p></div></article>
+          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="images/Where/Home%20Care%20Worker.jpg%20%281%29.jpeg" alt="" width="560" height="300"></div><div class="top"><h3>Aged Care Worker</h3><p>Support older Australians with everyday activities, independence and wellbeing.</p></div></article>
+          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="images/Where/Disability%20support%20worker.jpg.jpeg" alt="" width="560" height="300"></div><div class="top"><h3>Disability Support Worker</h3><p>Provide person-centred support to people living with disability.</p></div></article>
+          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="images/Where/Home%20Care%20Worker.jpg.jpeg" alt="" width="560" height="300"></div><div class="top"><h3>Home Care Worker</h3><p>Support clients to remain independent within their own homes.</p></div></article>
+          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="images/Where/personal%20care%20assistant.jpg.jpeg" alt="" width="560" height="300"></div><div class="top"><h3>Personal Care Assistant</h3><p>Provide practical and personal support based on individual needs.</p></div></article>
+          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="images/Where/community%20support%20worker.jpg.jpeg" alt="" width="560" height="300"></div><div class="top"><h3>Community Support Worker</h3><p>Help individuals participate in their community and work toward personal goals.</p></div></article>
+          <article class="career-card"><div class="career-media"><img loading="lazy" decoding="async" src="images/Where/Residential%20Support%20Worker.jpg.jpeg" alt="" width="560" height="300"></div><div class="top"><h3>Residential Support Worker</h3><p>Support people within residential care and supported-living environments.</p></div></article>
         </div>
       </div>
     </section>
@@ -636,21 +636,21 @@
         </div>
         <div class="path-grid m-rail rv">
           <article class="path-card">
-            <div class="path-media"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1566616213894-2d4e1baee5d8?auto=format&fit=crop&w=560&h=320&q=70" alt="" width="560" height="320"></div>
+            <div class="path-media"><img loading="lazy" decoding="async" src="images/pathways/ageing.jpeg" alt="" width="612" height="408"></div>
             <div class="path-body">
               <div><span class="path-tag">Pathway 01</span><h3>Ageing</h3><p>For people interested in residential aged care, community care and home-support environments.</p></div>
               <a class="path-link" href="#eligibility">Ask about Ageing <span>→</span></a>
             </div>
           </article>
           <article class="path-card featured">
-            <div class="path-media"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1604881991720-f91add269bed?auto=format&fit=crop&w=560&h=320&q=70" alt="" width="560" height="320"></div>
+            <div class="path-media"><img loading="lazy" decoding="async" src="images/pathways/ageing%20and%20desiblity.jpeg" alt="" width="612" height="408"></div>
             <div class="path-body">
               <div><span class="path-tag">Most flexible</span><h3>Ageing + Disability</h3><p>Ask whether a combined specialisation is available through the relevant training provider for broader exposure across care settings.</p></div>
               <a class="path-link" href="#eligibility">Check my options <span>→</span></a>
             </div>
           </article>
           <article class="path-card">
-            <div class="path-media"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=560&h=320&q=70" alt="" width="560" height="320"></div>
+            <div class="path-media"><img loading="lazy" decoding="async" src="images/pathways/disability.jpeg" alt="" width="612" height="408"></div>
             <div class="path-body">
               <div><span class="path-tag">Pathway 03</span><h3>Disability</h3><p>For people who want to build capability in person-centred disability and community support.</p></div>
               <a class="path-link" href="#eligibility">Ask about Disability <span>→</span></a>
