@@ -129,7 +129,7 @@ const OPTIONS = {
     'New to the industry': 'New to the industry',
     'Already working in the industry': 'Already working in the industry',
     'Studied before': 'I have studied something similar before',
-    'Not sure': 'Not sure — I need advice',
+    'Not sure': 'Not sure, I need advice',
   },
   interest: {
     'Aged Care': 'Aged Care',
@@ -222,10 +222,10 @@ function userEmail(lead) {
     .map(([k, v]) => `<tr><td style="padding:10px 0;color:#69708a;font-size:14px;width:45%">${esc(k)}</td><td style="padding:10px 0;font-size:14px;font-weight:bold">${esc(v)}</td></tr>`)
     .join('');
   const html = emailShell(`
-    <h1 style="margin:0 0 12px;font-size:24px;line-height:1.25">Thanks, ${esc(lead.firstName)} — we've received your enquiry</h1>
+    <h1 style="margin:0 0 12px;font-size:24px;line-height:1.25">Thanks, ${esc(lead.firstName)}. We've received your enquiry</h1>
     <p style="margin:0 0 20px;font-size:15px;line-height:1.65;color:#313754">
       Thank you for your interest in <strong>CHC33021 Certificate III in Individual Support</strong>.
-      A Gemini course adviser will contact you shortly to explain the relevant course, provider, fees, delivery options and practical requirements.
+      A Gemini Education course adviser will contact you shortly to explain the relevant course, provider, fees, delivery options and practical requirements.
     </p>
     <div style="background:#f3f1ff;border-radius:14px;padding:6px 18px;margin:0 0 20px">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${rows}</table>
@@ -233,9 +233,9 @@ function userEmail(lead) {
     <p style="margin:0 0 24px;font-size:14px;line-height:1.65;color:#69708a">
       If any of these details are incorrect, simply reply to this email and let us know.
     </p>`);
-  const text = `Thanks, ${lead.firstName} — we've received your enquiry.
+  const text = `Thanks, ${lead.firstName}. We've received your enquiry.
 
-Thank you for your interest in CHC33021 Certificate III in Individual Support. A Gemini course adviser will contact you shortly to explain the relevant course, provider, fees, delivery options and practical requirements.
+Thank you for your interest in CHC33021 Certificate III in Individual Support. A Gemini Education course adviser will contact you shortly to explain the relevant course, provider, fees, delivery options and practical requirements.
 
 ${summaryRows(lead).map(([k, v]) => `${k}: ${v}`).join('\n')}
 
